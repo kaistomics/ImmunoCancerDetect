@@ -1,14 +1,15 @@
 library(dplyr)
+
 setwd('trust4_out')
 source("src/immune_repertoire/trust4_metric_functions.R")
 args = commandArgs(trailingOnly=TRUE)
 filename <- args[1]
 cdr3 <- read.table(file = filename, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
 
-#filter out count of cdr ==0 and add the phenotype info for downstream comparison
-phenotype <- "GC_Test4"
+#filter out count of cdr < 3 and add the phenotype info for downstream comparison
+phenotype <- ""
 sample <- str_remove(filename, "_report.tsv")
-cdr3 <- subset(cdr3, count > 0) %>%
+cdr3 <- subset(cdr3, count > 3) %>%
   mutate(V = as.character(V), J = as.character(J), C = as.character(C), CDR3aa = as.character(CDR3aa)) %>%
   mutate(clinic = as.character(phenotype), sample = as.character(sample))
 
@@ -36,6 +37,7 @@ tcrcpk <- aggregate(CDR3aa ~ sample+clinic+lib.size, cdr3.tcr, function(x) lengt
   mutate(TCR_CPK = signif(CDR3aa/(lib.size/1000),4))
 bcrcpk <- aggregate(CDR3aa ~ sample+clinic+lib.size, cdr3.bcr, function(x) length(unique(x))) %>%
   mutate(BCR_CPK = signif(CDR3aa/(lib.size/1000),4))
+
 #BCR clonality and entropy
 single_sample_bcr_clonality <- getClonality(sample, cdr3.bcr.heavy, start=3, end=10)
 
@@ -52,6 +54,7 @@ st.Ig <- cdr3.bcr.heavy %>%
   dplyr::summarise(Num.Ig = sum(est_clonal_exp_norm))
 tmp <- t(st.Ig)
 colnames(tmp) <- tmp[2,]
+                    
 library(alakazam)
 bcrAA <- aminoAcidProperties(cdr3.bcr, property = c("length", "gravy", "bulk", "aliphatic", "polarity", "charge", "basic","acidic", "aromatic"),seq='CDR3aa', nt=FALSE)
 tcrAA <- aminoAcidProperties(cdr3.tcr, property = c("length", "gravy", "bulk", "aliphatic", "polarity", "charge", "basic","acidic", "aromatic"),seq='CDR3aa', nt=FALSE)
@@ -81,4 +84,4 @@ final <- cbind(data.frame(sample) %>% mutate(clinic =  as.character(phenotype), 
                         TRA = sum(tra$count)/sum(cdr3.tcr$count), TRB = sum(trb$count)/sum(cdr3.tcr$count),
                         TRD = sum(trd$count)/sum(cdr3.tcr$count), TRG = sum(trg$count)/sum(cdr3.tcr$count)), data.frame(tmp)['Num.Ig',, drop=FALSE])
 final
-write.table(final, noquote(paste(sample, "_add.txt", sep = "")), sep="\t", row.names = F)
+write.table(final, noquote(paste(sample, "_feature.txt", sep = "")), sep="\t", row.names = F)
