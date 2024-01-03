@@ -1,1 +1,1 @@
-# To create an input matrix for model training, combine all features calculated previously. 
+# To generate an input matrix for model training, combine all previously calculated features.
