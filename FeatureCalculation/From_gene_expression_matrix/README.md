@@ -1,5 +1,5 @@
-From raw bam files, create a count matrix file using featureCounts command with gencode v34.
+The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to HGNC gene name.
 
-From a count matrix file, normalize expression levels with TPM value.
+Next, normalize expression levels with TPM values.
 
-From a TPM matrix file, cut off some columns, remaining only values to make an input file for feature calculation.
+Then, remove unnecessary columns from the TPM matrix file to create an input file with only numeric values for feature calculation.
