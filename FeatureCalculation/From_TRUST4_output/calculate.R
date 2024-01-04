@@ -69,7 +69,7 @@ trb <- subset(cdr3.tcr, grepl("^TRB",V))
 trd <- subset(cdr3.tcr, grepl("^TRD",V))
 trg <- subset(cdr3.tcr, grepl("^TRG",V))
 
-# combine all features
+# combine all features of receptor sequences
 final <- cbind(data.frame(sample) %>% mutate(clinic =  as.character(phenotype), TCR.lib.size = tcrcpk$lib.size, TCR.CDR3.aa = tcrcpk$CDR3aa, TCR.CPK = tcrcpk$TCR_CPK) %>%
                  mutate(TCR.clonality = single_sample_tcr_clonality[2], TCR.entropy = single_sample_tcr_clonality[3]) %>%
                  mutate(BCR.lib.size = bcrcpk$lib.size, BCR.CDR3.aa = bcrcpk$CDR3aa, BCR.CPK = bcrcpk$BCR_CPK) %>%
