@@ -1,4 +1,4 @@
-# To generate input matrices for model training, combine all previously calculated features.
+# to generate input matrices for model training, combine all previously calculated features.
 
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Dropout
@@ -31,6 +31,7 @@ kfold = KFold(n_splits=num_folds, shuffle=True)
 # define per-fold score containers
 acc_per_fold = []
 loss_per_fold = []
+y_prob = []
 
 # K-fold Cross Validation model evaluation
 fold_no = 1
@@ -58,11 +59,12 @@ for train, test in kfold.split(x_train, y_train):
     print(f'Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%')
     acc_per_fold.append(scores[1] * 100)
     loss_per_fold.append(scores[0])
+    y_prob.append(model.predict(x_test))
     
     # increase fold number
     fold_no = fold_no + 1
 
-# provide average scores ==
+# provide average scores
 print('------------------------------------------------------------------------')
 print('Score per fold')
 for i in range(0, len(acc_per_fold)):
@@ -74,13 +76,11 @@ print(f'> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})')
 print(f'> Loss: {np.mean(loss_per_fold)}')
 print('------------------------------------------------------------------------')
 
-# final validation
-y_prob=model.predict(x_test)
-
 from sklearn.metrics import roc_curve,roc_auc_score
 import matplotlib.pyplot as plt
 
-fpr, tpr, thresholds = roc_curve (y_test, y_prob)
+# predict with model of best performance
+fpr, tpr, thresholds = roc_curve (y_test, y_prob[1])
 
 def plot_roc_curve(fper, tper):
     plt.plot(fper, tper, color='red', label='ROC')
@@ -92,5 +92,5 @@ def plot_roc_curve(fper, tper):
 
 # plot the roc curve
 plot_roc_curve(fpr,tpr) 
-auc_score=roc_auc_score(y_test,y_prob)
-print(auc_score)
+print('------------------------------------------------------------------------')
+print(f'Final AUC: {roc_auc_score(y_test,y_prob[1])}')
