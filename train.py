@@ -1,4 +1,4 @@
-# To generate an input matrix for model training, combine all previously calculated features.
+# To generate input matrices for model training, combine all previously calculated features.
 
 import tensorflow as tf
 from keras.models import Sequential
