@@ -27,8 +27,10 @@ model.add(Dense(1, activation='sigmoid'))
 adam = tf.keras.optimizers.Adam(lr=0.001, beta_1=0.8, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
+# train the model
 model.fit(x_train, y_train, epochs=10, batch_size=128)
 
+# evaluate the model
 model.evaluate(x_test, y_test, verbose=2)
 
 y_prob=model.predict(x_test)
@@ -46,6 +48,7 @@ def plot_roc_curve(fper, tper):
     plt.legend()
     plt.show()
 
-plot_roc_curve (fpr,tpr) 
+# plot the roc curve
+plot_roc_curve(fpr,tpr) 
 auc_score=roc_auc_score(y_test,y_prob)
 print(auc_score)
