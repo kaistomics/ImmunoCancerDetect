@@ -31,12 +31,12 @@ model.fit(x_train, y_train, epochs=10, batch_size=128)
 
 model.evaluate(x_test, y_test, verbose=2)
 
-y_val_cat_prob=model.predict(x_test)
+y_prob=model.predict(x_test)
 
 from sklearn.metrics import roc_curve,roc_auc_score
 import matplotlib.pyplot as plt
 
-fpr, tpr, thresholds = roc_curve (y_test, y_val_cat_prob)
+fpr, tpr, thresholds = roc_curve (y_test, y_prob)
 
 def plot_roc_curve(fper, tper):
     plt.plot(fper, tper, color='red', label='ROC')
@@ -47,5 +47,5 @@ def plot_roc_curve(fper, tper):
     plt.show()
 
 plot_roc_curve (fpr,tpr) 
-auc_score=roc_auc_score(y_test,y_val_cat_prob)
+auc_score=roc_auc_score(y_test,y_prob)
 print(auc_score)
