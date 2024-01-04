@@ -1,8 +1,9 @@
 # To generate input matrices for model training, combine all previously calculated features.
 
 import tensorflow as tf
-from keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
+from keras.models import Sequential
+from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 import numpy as np
 from numpy import loadtxt
@@ -28,7 +29,8 @@ adam = tf.keras.optimizers.Adam(lr=0.001, beta_1=0.8, beta_2=0.999, epsilon=None
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 # train the model
-model.fit(x_train, y_train, epochs=10, batch_size=128)
+early_stopping = EarlyStopping(patience = 0)
+model.fit(x_train, y_train, epochs=10, batch_size=128, callbacks = [early_stopping])
 
 # evaluate the model
 model.evaluate(x_test, y_test, verbose=2)
