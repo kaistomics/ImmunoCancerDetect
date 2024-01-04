@@ -1,4 +1,4 @@
-The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to HGNC gene name.
+The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to HGNC gene name and remove duplicate genes.
 
 Next, normalize expression levels with TPM values.
 
