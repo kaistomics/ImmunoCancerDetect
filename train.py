@@ -30,7 +30,9 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 
 # train the model
 early_stopping = EarlyStopping(patience = 0)
-model.fit(x_train, y_train, epochs=10, batch_size=128, callbacks = [early_stopping])
+num_epoch = 10
+num_batchsize = 128
+model.fit(x_train, y_train, epochs=num_epoch, batch_size=num_batchsize, callbacks = [early_stopping])
 
 # evaluate the model
 model.evaluate(x_test, y_test, verbose=2)
