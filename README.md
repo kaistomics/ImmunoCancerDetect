@@ -25,6 +25,13 @@ The utility of peripheral blood features other than cell-free DNA in noninvasive
 ---
 ### Input file preparation
 
-To generate input matrices for model training, combine all previously calculated features.
+* To generate gene expression matrices
+  1. The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to the HGNC gene name and remove any duplicate genes.
+
+  2. Next, normalize expression levels with TPM values.
+
+  3. Then, remove unnecessary columns from the TPM matrix file to create an input file with only numeric values for feature calculation.
+
+* To generate input matrices for model training, combine all previously calculated features.
 
 -> Input file format: 124 features * n samples input matrix csv file
