@@ -25,15 +25,17 @@ The utility of peripheral blood features other than cell-free DNA in noninvasive
 ---
 ### Input file preparation
 
-* To generate gene expression matrices
-  1. The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to the HGNC gene name and remove any duplicate genes.
+#### To generate gene expression matrices
 
-		e.g.
-````
+* The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to the HGNC gene name and remove any duplicate genes.
+
+e.g.
+
+```
 featureCounts -T 30 -p -s 0 -t gene -g gene_id -a gencode.v34.annotation.gtf -o count.txt *.bam
+```
 
-````
-````
+```
 import csv
 import pandas as pd
 import numpy as np
@@ -66,16 +68,19 @@ print("HGNC pcgene filtered data with hg38 shape: ", mergeref38.shape)
 ##save HGNC data
 mergeref19.to_csv("input_pcTRIG_filtered_hg19.txt", sep='\t')
 mergeref38.to_csv("input_pcTRIG_filtered_hg38.txt", sep='\t')
-````
-````
+```
+
+```
 cut -f 1 input.txt | sort -n | uniq -c | sort | awk '$1 > 1 {print($2)}' > gene_dup.txt
 grep -vf gene_dup.txt input.txt > input_rmdup.txt
-````
+```
 
-  2. Next, normalize expression levels with TPM values.
 
-		e.g. R code
-````
+* Next, normalize expression levels with TPM values.
+
+e.g. R code
+ 
+```
 library(dplyr)
 library(tidyr)
 
@@ -93,17 +98,18 @@ ftr.tpm <- ftr.cnt %>%
   select(-cnt) %>%
   spread(sample, tpm)
 write.table(ftr.tpm, file=f_out, sep="\t", row.names=FALSE, quote=FALSE)
-````
+```
 
 
-  3. Then, remove unnecessary columns from the TPM matrix file to create an input file with only numeric values for feature calculation.
+* Then, remove unnecessary columns from the TPM matrix file to create an input file with only numeric values for feature calculation.
 
-		e.g.
+e.g.
 
-````
+```
 cut -f 2-6 --complement TPM.txt > TPM_valueonly.txt
-````
+```
 
-* To generate input matrices for model training, combine all previously calculated features.
 
--> Input file format: 124 features * n samples input matrix csv file
+#### To generate input matrices for model training, combine all previously calculated features.
+
+* Input file format: 124 features * n samples input matrix csv file
