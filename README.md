@@ -25,4 +25,6 @@ The utility of peripheral blood features other than cell-free DNA in noninvasive
 ---
 ### Input file preparation
 
-Input file format: 124 features * n samples input matrix csv file
+To generate input matrices for model training, combine all previously calculated features.
+
+-> Input file format: 124 features * n samples input matrix csv file
