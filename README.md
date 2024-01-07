@@ -28,7 +28,7 @@ The utility of peripheral blood features other than cell-free DNA in noninvasive
 * To generate gene expression matrices
   1. The count matrix file can be created from the raw bam files by using the featureCounts command with gencode v34. It is also necessary to convert the Ensemble gene ID to the HGNC gene name and remove any duplicate genes.
 
-e.g.
+		e.g.
 ````
 featureCounts -T 30 -p -s 0 -t gene -g gene_id -a gencode.v34.annotation.gtf -o count.txt *.bam
 
@@ -74,7 +74,7 @@ grep -vf gene_dup.txt input.txt > input_rmdup.txt
 
   2. Next, normalize expression levels with TPM values.
 
-e.g. R code
+		e.g. R code
 ````
 library(dplyr)
 library(tidyr)
@@ -98,7 +98,7 @@ write.table(ftr.tpm, file=f_out, sep="\t", row.names=FALSE, quote=FALSE)
 
   3. Then, remove unnecessary columns from the TPM matrix file to create an input file with only numeric values for feature calculation.
 
-e.g.
+		e.g.
 
 ````
 cut -f 2-6 --complement TPM.txt > TPM_valueonly.txt
