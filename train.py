@@ -45,14 +45,14 @@ for train, test in kfold.split(x_train, y_train):
     model.add(Dense(1, activation='sigmoid'))
     adam = tf.keras.optimizers.Adam(lr=0.001, beta_1=0.8, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
    
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=adam, loss='binary_crossentropy', metrics=['accuracy'])
 
     # generate a print
     print('------------------------------------------------------------------------')
     print(f'Training for fold {fold_no} ...')
     
     # fit data to the model
-    model.fit(x_train[train], y_train[train], epochs=num_epoch, batch_size=num_batchsize, callbacks = [early_stopping], validation_split=0.2)
+    model.fit(x_train[train], y_train[train], epochs=num_epoch, batch_size=num_batchsize, callbacks = [early_stopping])
     
     # evaluate the model
     scores = model.evaluate(x_train[test], y_train[test], verbose=0)
@@ -95,4 +95,4 @@ def plot_roc_curve(fper, tper):
 # plot the roc curve
 plot_roc_curve(fpr,tpr) 
 print('------------------------------------------------------------------------')
-print(f'Final AUC: {roc_auc_score(y_test,y_prob[1])}')
+print(f'Final AUC: {roc_auc_score(y_test,y_prob[best_fold])}')
