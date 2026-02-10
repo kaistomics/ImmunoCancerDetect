@@ -79,8 +79,10 @@ print('------------------------------------------------------------------------'
 from sklearn.metrics import roc_curve,roc_auc_score
 import matplotlib.pyplot as plt
 
+best_fold = np.argmax(acc_per_fold)
+
 # predict with model of best performance
-fpr, tpr, thresholds = roc_curve (y_test, y_prob[1])
+fpr, tpr, thresholds = roc_curve (y_test, y_prob[best_fold])
 
 def plot_roc_curve(fper, tper):
     plt.plot(fper, tper, color='red', label='ROC')
