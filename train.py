@@ -21,9 +21,9 @@ y_test = np.concatenate([np.ones(shape=(len(dat1))), np.zeros(shape=(len(dat2)))
 
 # hyperparameters
 num_folds = 5
-num_epoch = 10
+num_epoch = 50
 num_batchsize = 128
-early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+early_stopping = EarlyStopping(patience=10, restore_best_weights=True)
 
 # define the K-fold Cross Validator
 kfold = KFold(n_splits=num_folds, shuffle=True)
