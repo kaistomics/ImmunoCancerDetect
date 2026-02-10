@@ -23,7 +23,7 @@ y_test = np.concatenate([np.ones(shape=(len(dat1))), np.zeros(shape=(len(dat2)))
 num_folds = 5
 num_epoch = 10
 num_batchsize = 128
-early_stopping = EarlyStopping(patience = 0)
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
 # define the K-fold Cross Validator
 kfold = KFold(n_splits=num_folds, shuffle=True)
@@ -52,7 +52,7 @@ for train, test in kfold.split(x_train, y_train):
     print(f'Training for fold {fold_no} ...')
     
     # fit data to the model
-    model.fit(x_train[train], y_train[train], epochs=num_epoch, batch_size=num_batchsize, callbacks = [early_stopping])
+    model.fit(x_train[train], y_train[train], epochs=num_epoch, batch_size=num_batchsize, callbacks = [early_stopping], validation_split=0.2)
     
     # evaluate the model
     scores = model.evaluate(x_train[test], y_train[test], verbose=0)
